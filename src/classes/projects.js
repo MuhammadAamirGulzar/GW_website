@@ -546,7 +546,7 @@ const projects = [
       icon: <Heart className="h-8 w-8 text-red-600" />,
       logo: "/logos/heart-failure.jpg",
       githubUrl: null,
-      videoUrl: null,
+      videoUrl: "/videos/Ecg.mp4",
       paperUrl: null,
       architectureImage: null
     },
@@ -674,7 +674,7 @@ const projects = [
       icon: <MessageSquare className="h-8 w-8 text-green-600" />,
       logo: "/logos/twitter_sentiment_analysis_logo.jpg",
       githubUrl: null,
-      videoUrl: null,
+      videoUrl: "/videos/Twitter_Sentiments_App.mp4",
       paperUrl: null,
       architectureImage: null
     },
