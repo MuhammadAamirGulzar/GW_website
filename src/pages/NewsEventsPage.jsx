@@ -128,6 +128,8 @@ const NewsAndEvents = () => {
                     <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
                     <div className="p-8 lg:p-10 relative z-10">
+                      <div className="flex flex-col lg:flex-row gap-8 items-start">
+                        <div className="order-2 lg:order-1 flex-1 min-w-0">
                       {/* Category Tag */}
                       <div className="mb-6">
                         <span className="inline-flex items-center bg-gray-100 text-gray-700 px-6 py-3 rounded-full text-sm font-bold shadow-lg border border-gray-200 group-hover:scale-105 transition-transform duration-300">
@@ -181,6 +183,46 @@ const NewsAndEvents = () => {
                             <div className="absolute -inset-1 bg-gray-600/50 opacity-0 group-hover/btn:opacity-75 blur-lg transition-opacity duration-500"></div>
                           </a>
                         )}
+                      </div>
+                        </div>
+
+                        {/* Side Image (Herman's photo for his PhD post, placeholder for others) */}
+                        <div className="order-1 lg:order-2 w-full lg:w-64 xl:w-72 rounded-2xl overflow-hidden border border-gray-200 bg-gray-100 aspect-[4/3] lg:aspect-[4/3] relative shadow-md">
+                          {post.heading === 'Herman Wandabwa has sucessfully completed his PhD' ? (
+                            <img
+                              src="/backup-images/Herman_wanabanda.jpg"
+                              alt="Herman Wandabwa"
+                              className="w-full h-full object-contain object-top bg-white"
+                              loading="lazy"
+                            />
+                          ) : post.heading && post.heading.startsWith('Recieved NRPU 2022') ? (
+                            <img
+                              src="/backup-images/hec-logo.png"
+                              alt="HEC Logo"
+                              className="w-full h-full object-contain object-center bg-white"
+                              loading="lazy"
+                            />
+                          ) : post.heading === 'Successfully Organised IWDS 2020' ? (
+                            <img
+                              src="/backup-images/8th_international_workshop_image.png"
+                              alt="8th International Workshop on Data Science (IWDS 2020)"
+                              className="w-full h-full object-contain object-center bg-white"
+                              loading="lazy"
+                            />
+                          ) : post.pic ? (
+                            <img
+                              src={post.pic}
+                              alt={post.heading}
+                              className="w-full h-full object-contain object-center bg-white"
+                              loading="lazy"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-gray-400 text-sm">
+                              Image
+                            </div>
+                          )}
+                          <div className="absolute inset-0 pointer-events-none ring-1 ring-black/5"></div>
+                        </div>
                       </div>
 
                       {/* Background decoration */}
