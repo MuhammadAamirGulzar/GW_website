@@ -205,6 +205,44 @@ const PeoplePage = () => {
         fullBio: 'Muhammad Waheed Ashraf is a PhD scholar at National University of Computer and Emerging Sciences (NUCES), Islamabad. He has worked as Research Assistant on a project "Deep Basket Analysis" where he developed his expertise in the areas of Data Mining, Machine Learning, and Computer vision. He has good expertise and understanding of domain knowledge required in this project.',
         image: '/backup-images/Waheed.png',
         researchAreas: ['Data Mining', 'Computer Vision', 'Deep Learning']
+      },{
+        id: 'arsalan-khan',
+        name: 'Arsalan Khan',
+        title: 'Lecturer & PhD Scholar',
+        role: 'Faculty',
+        category: 'Graduate Students',
+        area: 'Machine Learning, Computer Vision, Deep Learning, NLP',
+        bio: 'Arsalan Khan is a Lecturer at the National University of Computer and Emerging Sciences (FAST-NUCES) in Islamabad and a PhD scholar in Computer Science at the same institution. He teaches courses in machine learning for business analytics, web programming, data structures, and programming, among others. In addition to his teaching role, he mentors students on their careers and projects and supports faculty initiatives.',
+        shortBio: 'Lecturer & PhD scholar at FAST-NUCES specializing in ML, DL, CV, and NLP...',
+        fullBio: 'Arsalan Khan is a Lecturer and PhD scholar at FAST-NUCES, Islamabad. He teaches courses in machine learning, programming, and analytics, and actively mentors students. Previously, he worked as a Junior ML Engineer at Neurog and held roles at Air University and the National Center for Cyber Security. His expertise spans ML, DL, RL, NLP, computer vision, and full-stack development, with projects including crypto trading bots, résumé bots, and stress prediction apps.',
+        image: '/backup-images/Arsalan_Khan.png',
+        researchAreas: ['Machine Learning', 'Computer Vision', 'Deep Learning', 'NLP']
+      },
+      {
+        id: 'muhammad-abbas',
+        name: 'Muhammad Abbas',
+        title: "Master's Scholar",
+        role: 'Graduate Student',
+        category: 'Graduate Students',
+        area: 'Computer Vision, NLP, Deep Learning',
+        bio: 'Muhammad Abbas is a Master’s scholar at the National University of Computer and Emerging Sciences (NUCES), Islamabad. His research focuses on reducing modality interference in Multimodal Large Language Models (MLLMs) using Reinforcement Learning techniques.',
+        shortBio: 'Master’s scholar at NUCES-FAST working on multimodal learning and reinforcement learning...',
+        fullBio: 'Muhammad Abbas is a Master’s scholar at the National University of Computer and Emerging Sciences (NUCES), Islamabad. His research focuses on reducing modality interference in Multimodal Large Language Models (MLLMs) using Reinforcement Learning techniques. He is working on improving cross-modal alignment and minimizing conflicts between visual and textual representations to enhance overall multimodal understanding. His research interests include multimodal learning, reinforcement learning, and natural language processing, with an emphasis on developing efficient and robust AI models.',
+        image: '/backup-images/Abbas.jpeg',
+        researchAreas: ['Multimodal Learning', 'Reinforcement Learning', 'NLP', 'Deep Learning']
+      },
+      {
+        id: 'qamar-munir',
+        name: 'Qamar Munir',
+        title: 'Data & Software Professional',
+        role: 'Industry Expert',
+        category: 'Graduate Students',
+        area: 'Data Mining, Data Engineering, Software Development, API Integration',
+        bio: 'Qamar Munir is a veteran data and software professional with extensive experience in both public and private sector organizations. He has worked on diverse data domains ranging from scientific and meteorological datasets to large-scale demographic and population data.',
+        shortBio: 'Experienced data professional specializing in mining, engineering, and software development...',
+        fullBio: 'Qamar Munir is a veteran data and software professional with extensive experience in both public and private sector organizations. He has worked on diverse data domains ranging from scientific and meteorological datasets to large-scale demographic and population data. He has hands-on expertise in data mining, data visualization, pattern recognition, and algorithm development for classification, clustering, and regression.',
+        image: '/backup-images/Qamar_munir.jpeg',
+        researchAreas: ['Data Mining', 'Data Engineering', 'Software Development', 'API Integration']
       }
     ]
   };
