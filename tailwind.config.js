@@ -84,6 +84,19 @@ module.exports = {
           900: '#7f1d1d',
           950: '#450a0a',
         },
+        brand: {
+          50:  '#ecfeff',
+          100: '#cffafe',
+          200: '#a5f3fc',
+          300: '#67e8f9',
+          400: '#22d3ee',
+          500: '#06b6d4',
+          600: '#0891b2',
+          700: '#0e7490',
+          800: '#155e75',
+          900: '#164e63',
+          950: '#083344',
+        },
         neutral: {
           50: '#fafafa',
           100: '#f5f5f5',
@@ -108,7 +121,7 @@ module.exports = {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'Fira Code', 'Monaco', 'Cascadia Code', 'SF Mono', 'Consolas', 'Liberation Mono', 'Menlo', 'monospace'],
       },
       fontSize: {
@@ -145,6 +158,8 @@ module.exports = {
         'inner-soft': 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
         'glow': '0 0 20px rgba(14, 165, 233, 0.15)',
         'glow-accent': '0 0 20px rgba(224, 102, 255, 0.15)',
+        'glow-brand': '0 0 30px rgba(6, 182, 212, 0.35)',
+        'glow-brand-lg': '0 0 60px rgba(6, 182, 212, 0.25)',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

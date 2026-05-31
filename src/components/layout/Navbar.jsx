@@ -24,11 +24,11 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'Home', path: '/', icon: Home },
-    { name: 'Research', path: '/research', icon: FlaskConical },
-    { name: 'People', path: '/people', icon: Users },
-    { name: 'Projects', path: '/projects', icon: Briefcase },
+    { name: 'Solutions', path: '/solutions', icon: FlaskConical },
+    { name: 'Team', path: '/team', icon: Users },
+    { name: 'Portfolio', path: '/portfolio', icon: Briefcase },
     { name: 'Publications', path: '/publications', icon: BookOpen },
-    { name: 'News & Events', path: '/news', icon: Newspaper },
+    { name: 'Insights', path: '/insights', icon: Newspaper },
     { name: 'Contact', path: '/contact', icon: Mail }
   ];
 
@@ -96,12 +96,10 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const DataInsightLogo = ({ className = "h-10 w-30" }) => (
-    <img
-      src="/backup-images/DataInsightLabLogo.png"
-      alt="DataInsight Logo"
-      className={`${className} object-contain`}
-    />
+  const BrandMark = ({ className = 'h-10 w-10' }) => (
+    <div className={`${className} rounded-xl ${scrolled ? 'bg-slate-900 text-white' : 'bg-white text-slate-900'} flex items-center justify-center font-bold text-lg transition-colors duration-700`}>
+      GW
+    </div>
   );
 
   const handleNavClick = (path, e) => {
@@ -151,7 +149,7 @@ const Navbar = () => {
         `}
       </style>
 
-      <nav className={`fixed top-0 w-full z-50 transition-all duration-700 ${scrolled ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-gray-200/50' : 'bg-white/90 backdrop-blur-md shadow-lg'}`}>
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-700 ${scrolled ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-gray-200/50' : 'bg-slate-900/85 backdrop-blur-xl border-b border-white/10'}`}>
         <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
           <div className="flex justify-between items-center h-20 max-w-screen-xl mx-auto">
             {/* Logo */}
@@ -160,18 +158,18 @@ const Navbar = () => {
               onClick={handleHomeNavigation}
             >
               <div className="relative flex-shrink-0">
-                <div className="relative bg-slate-100 p-3 rounded-2xl shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110">
-                  <DataInsightLogo />
+                <div className={`relative p-3 rounded-2xl shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:scale-110 ${scrolled ? 'bg-slate-100' : 'bg-white/10'}`}>
+                  <BrandMark />
                   <div className="absolute inset-0 bg-white/20 rounded-2xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 </div>
                 <div className="absolute -inset-1 bg-gray-400/50 rounded-2xl blur opacity-0 group-hover:opacity-75 transition-opacity duration-500 animate-pulse"></div>
               </div>
               <div className="flex flex-col min-w-0">
-                <span className="text-xl xl:text-2xl font-bold text-gray-900 group-hover:text-gray-700 transition-colors duration-300 truncate">
-                  DataInsight
+                <span className={`text-xl xl:text-2xl font-bold transition-colors duration-700 truncate ${scrolled ? 'text-gray-900 group-hover:text-gray-700' : 'text-white group-hover:text-gray-200'}`}>
+                  GradientWise
                 </span>
-                <span className="text-xs text-gray-500 font-medium tracking-wider truncate">
-                  Computing Research Lab
+                <span className={`text-xs font-medium tracking-wider truncate transition-colors duration-700 ${scrolled ? 'text-gray-500' : 'text-gray-300'}`}>
+                  Architecting Intelligent Systems
                 </span>
               </div>
             </div>
@@ -184,7 +182,13 @@ const Navbar = () => {
                     key={item.name}
                     type="button"
                     onClick={(e) => handleNavClick(item.path, e)}
-                    className={`group relative flex items-center space-x-1 px-4 xl:px-5 2xl:px-6 py-3 rounded-2xl text-sm xl:text-sm font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 whitespace-nowrap ${isActive(item.path) ? 'text-white bg-slate-800 shadow-xl shadow-slate-800/25' : 'text-gray-700 hover:text-white hover:bg-gray-700 hover:shadow-xl hover:shadow-gray-500/25'}`}
+                    className={`group relative flex items-center space-x-1 px-4 xl:px-5 2xl:px-6 py-3 rounded-2xl text-sm xl:text-sm font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 whitespace-nowrap ${
+                      isActive(item.path)
+                        ? 'text-white bg-cyan-500 shadow-xl shadow-cyan-500/40'
+                        : scrolled
+                          ? 'text-gray-700 hover:text-white hover:bg-slate-700 hover:shadow-xl hover:shadow-slate-500/25'
+                          : 'text-gray-200 hover:text-white hover:bg-white/15 hover:shadow-xl'
+                    }`}
                   >
                     <div className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isActive(item.path) ? 'bg-slate-900 opacity-100' : 'bg-gray-800 opacity-0 group-hover:opacity-100'}`}></div>
                     <div className={`absolute -inset-1 rounded-2xl blur-lg transition-opacity duration-500 ${isActive(item.path) ? 'bg-gray-600/50 opacity-75 animate-pulse' : 'bg-gray-500/50 opacity-0 group-hover:opacity-75'}`}></div>
@@ -208,7 +212,7 @@ const Navbar = () => {
                 ref={buttonRef}
                 type="button"
                 onClick={toggleMenu}
-                className="group relative text-gray-700 hover:text-white p-3 rounded-2xl transition-all duration-500 hover:bg-gray-700 hover:shadow-xl hover:scale-110 transform-gpu overflow-hidden"
+                className={`group relative p-3 rounded-2xl transition-all duration-500 hover:text-white hover:bg-slate-700 hover:shadow-xl hover:scale-110 transform-gpu overflow-hidden ${scrolled ? 'text-gray-700' : 'text-gray-200'}`}
                 aria-label={isOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isOpen}
               >
@@ -247,10 +251,10 @@ const Navbar = () => {
                     key={item.name}
                     type="button"
                     onClick={(e) => handleNavClick(item.path, e)}
-                    className={`group flex items-center space-x-2.5 w-full px-6 py-4 rounded-2xl font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 ${isActive(item.path) ? 'text-white bg-slate-800 shadow-xl shadow-slate-800/25' : 'text-gray-700 hover:text-white hover:bg-gray-700 hover:shadow-xl'}`}
+                    className={`group flex items-center space-x-2.5 w-full px-6 py-4 rounded-2xl font-semibold transition-all duration-500 transform hover:scale-105 hover:-translate-y-1 ${isActive(item.path) ? 'text-white bg-cyan-500 shadow-xl shadow-cyan-500/40' : 'text-gray-700 hover:text-white hover:bg-slate-700 hover:shadow-xl'}`}
                   >
-                    <div className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isActive(item.path) ? 'bg-slate-900 opacity-100' : 'bg-gray-800 opacity-0 group-hover:opacity-100'}`}></div>
-                    <div className={`absolute -inset-1 rounded-2xl blur-lg transition-opacity duration-500 ${isActive(item.path) ? 'bg-gray-600/50 opacity-75 animate-pulse' : 'bg-gray-500/50 opacity-0 group-hover:opacity-75'}`}></div>
+                    <div className={`absolute inset-0 rounded-2xl transition-opacity duration-300 ${isActive(item.path) ? 'bg-cyan-600 opacity-100' : 'bg-slate-800 opacity-0 group-hover:opacity-100'}`}></div>
+                    <div className={`absolute -inset-1 rounded-2xl blur-lg transition-opacity duration-500 ${isActive(item.path) ? 'bg-cyan-400/50 opacity-75 animate-pulse' : 'bg-slate-500/30 opacity-0 group-hover:opacity-75'}`}></div>
                     <div className="relative z-10 flex items-center space-x-2.5">
                       <div className={`relative p-2 rounded-xl transition-all duration-300 flex-shrink-0 -translate-x-2 ${isActive(item.path) ? 'bg-white/20 animate-pulse' : 'bg-gray-100 group-hover:bg-white/20'}`}>
                         <item.icon className={`h-6 w-6 transition-all duration-300 ${isActive(item.path) ? 'text-white animate-pulse' : 'text-gray-600 group-hover:text-white group-hover:animate-bounce'}`} />

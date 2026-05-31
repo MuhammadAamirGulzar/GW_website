@@ -231,7 +231,7 @@ const ContactForm = ({ isOpen, onClose, projectTitle, showToast }) => {
       formDataToSend.append("from_name", formData.name);
       formDataToSend.append("email", formData.email);
       formDataToSend.append("reply_to", formData.email);
-      formDataToSend.append("to", "asif.naeem@nu.edu.pk");
+      formDataToSend.append("to", "hello@gradientwise.com");
       
       const messageContent = `Project Access Request Details:\n- Project: ${projectTitle}\n- Name: ${formData.name}\n- Email: ${formData.email}\n- Company: ${formData.company || 'Not provided'}\n- Phone: ${formData.phone || 'Not provided'}\n\nMessage:\n${formData.message || 'No additional message provided'}`.trim();
       
@@ -433,14 +433,17 @@ const ProjectsPage = () => {
       <ContactForm isOpen={contactModal.isOpen} onClose={closeContactForm} projectTitle={contactModal.projectTitle} showToast={showToast} />
       <VideoArchitectureModal isOpen={videoModal.isOpen} onClose={closeVideoModal} project={videoModal.project} />
 
-      <div className="relative bg-slate-800 text-white overflow-hidden min-h-screen flex items-center">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-2xl transform rotate-45 animate-spin-slow backdrop-blur-sm"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-white/15 rounded-full animate-bounce-slow backdrop-blur-sm"></div>
-          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-white/20 rounded-lg animate-pulse backdrop-blur-sm"></div>
-          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-white/10 rounded-full transform rotate-12 animate-float backdrop-blur-sm"></div>
-        </div>
-        <div className="absolute inset-0 opacity-30 transition-all duration-1000" style={{ background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.3) 0%, transparent 70%)` }}></div>
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden min-h-screen flex items-center">
+        {/* Particle network */}
+        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          {[...Array(20)].map((_, i) => (
+            <circle key={i} cx={`${(i * 17 + 5) % 100}%`} cy={`${(i * 23 + 10) % 100}%`} r="1.5" fill="#22d3ee" />
+          ))}
+          {[...Array(10)].map((_, i) => (
+            <line key={`l${i}`} x1={`${(i * 17 + 5) % 100}%`} y1={`${(i * 23 + 10) % 100}%`} x2={`${((i + 3) * 17 + 5) % 100}%`} y2={`${((i + 3) * 23 + 10) % 100}%`} stroke="#22d3ee" strokeWidth="0.5" />
+          ))}
+        </svg>
+        <div className="absolute inset-0 opacity-30 transition-all duration-1000" style={{ background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(6, 182, 212, 0.25) 0%, transparent 65%)` }}></div>
 
         <div className="relative max-w-5xl mx-auto px-2 py-16 sm:px-6 lg:px-8 z-10">
           <div className="text-center space-y-8">

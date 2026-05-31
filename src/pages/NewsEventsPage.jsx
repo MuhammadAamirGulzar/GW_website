@@ -28,19 +28,21 @@ const NewsAndEvents = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative bg-slate-800 text-white overflow-hidden min-h-screen flex items-center">
-        {/* Animated floating elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-2xl transform rotate-45 animate-spin-slow backdrop-blur-sm"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-white/15 rounded-full animate-bounce-slow backdrop-blur-sm"></div>
-          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-white/20 rounded-lg animate-pulse backdrop-blur-sm"></div>
-          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-white/10 rounded-full transform rotate-12 animate-float backdrop-blur-sm"></div>
-        </div>
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden min-h-screen flex items-center">
+        {/* Particle network */}
+        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          {[...Array(20)].map((_, i) => (
+            <circle key={i} cx={`${(i * 17 + 5) % 100}%`} cy={`${(i * 23 + 10) % 100}%`} r="1.5" fill="#22d3ee" />
+          ))}
+          {[...Array(10)].map((_, i) => (
+            <line key={`l${i}`} x1={`${(i * 17 + 5) % 100}%`} y1={`${(i * 23 + 10) % 100}%`} x2={`${((i + 3) * 17 + 5) % 100}%`} y2={`${((i + 3) * 23 + 10) % 100}%`} stroke="#22d3ee" strokeWidth="0.5" />
+          ))}
+        </svg>
         {/* Dynamic background gradient based on mouse position */}
                 <div 
                     className="absolute inset-0 opacity-30 transition-all duration-1000"
                     style={{
-                        background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`
+                        background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(6, 182, 212, 0.25) 0%, transparent 65%)`
                     }}
                 ></div>
 
@@ -56,7 +58,7 @@ const NewsAndEvents = () => {
               <h1 className="text-6xl md:text-7xl font-bold mb-6 relative">
                 <span className="relative inline-block group">
                   <span className="text-white animate-gradient-x bg-300%">
-                    News & Events
+                    Insights
                   </span>
                   <span className="absolute -inset-2 bg-white/20 blur-2xl animate-pulse-glow"></span>
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer transform -skew-x-12"></span>
@@ -77,7 +79,7 @@ const NewsAndEvents = () => {
               </div>
             </div>
             <p className="text-xl md:text-2xl max-w-4xl mx-auto text-gray-300 leading-relaxed animate-fade-in-up" style={{animationDelay: '0.5s'}}>
-              Discover the latest breakthroughs, achievements, and upcoming events from the <span className="text-white font-bold animate-text-glow">DataInsight Lab</span> research community.
+              Discover the latest launches, R&D outcomes, and industry insights from <span className="text-white font-bold animate-text-glow">GradientWise</span>.
             </p>
           </div>
         </div>
@@ -262,12 +264,12 @@ const NewsAndEvents = () => {
                       Our Team
                     </h3>
                     <p className="text-gray-600 mb-8 leading-relaxed text-center">
-                      Learn about the areas of research and methodologies used by the Data Science Research Group.
+                      Meet the people building and delivering AI systems at GradientWise.
                     </p>
 
                     {/* Button */}
                     <Link
-                      to="/our-people"
+                      to="/team"
                       className="group/btn relative w-full bg-gray-900 text-white px-8 py-4 rounded-2xl font-bold overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-gray-500/25 hover:-translate-y-2 hover:scale-105 transform-gpu border border-gray-800 flex items-center justify-center"
                     >
                       <span className="relative z-10 flex items-center">
@@ -301,9 +303,9 @@ const NewsAndEvents = () => {
                     
                     <div className="space-y-3">
                       {[
-                        { name: 'Research Areas', link: '/research' },
+                        { name: 'Solutions', link: '/solutions' },
                         { name: 'Publications', link: '/publications' },
-                        { name: 'Projects', link: '/projects' },
+                        { name: 'Portfolio', link: '/portfolio' },
                         { name: 'Contact Us', link: '/contact' }
                       ].map((item, index) => (
                         <Link

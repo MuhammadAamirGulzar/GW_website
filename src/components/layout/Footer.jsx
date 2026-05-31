@@ -4,6 +4,27 @@ import { Database, Twitter, Linkedin, Github, Mail, MapPin, Phone, Code, Sparkle
 const Footer = () => {
   return (
     <footer className="relative bg-slate-900 text-white overflow-hidden border-t-4 border-slate-700 shadow-2xl">
+      {/* Live stats bar */}
+      <div className="bg-slate-800 border-b border-slate-700/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 text-xs sm:text-sm font-semibold">
+            {[
+              { value: '57+', label: 'Projects' },
+              { value: '200+', label: 'Publications' },
+              { value: '25+', label: 'Researchers' },
+              { value: '$15M+', label: 'Funding' },
+            ].map((stat, i) => (
+              <React.Fragment key={stat.label}>
+                {i > 0 && <span className="hidden sm:block w-px h-4 bg-slate-600" />}
+                <span className="flex items-center gap-1.5">
+                  <span className="text-cyan-400 font-bold">{stat.value}</span>
+                  <span className="text-slate-400">{stat.label}</span>
+                </span>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      </div>
       {/* Background pattern for distinction */}
       <div className="absolute inset-0 bg-gradient-to-b from-slate-800 to-slate-900"></div>
       
@@ -42,13 +63,13 @@ const Footer = () => {
               </div>
               <div>
                 <span className="text-xl font-bold text-white group-hover:text-gray-200 transition-colors duration-300 block">
-                  DataInsight
+                  GradientWise
                 </span>
-                <span className="text-xs text-gray-400 font-medium">Research Lab</span>
+                <span className="text-xs text-gray-400 font-medium">AI Product Engineering</span>
               </div>
             </div>
             <p className="text-gray-300 mb-6 leading-relaxed text-sm">
-              NUCES Islamabad - Advancing research in Data Science, Machine Learning, and emerging computational technologies.
+              Architecting Intelligent Systems.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
@@ -70,20 +91,20 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-bold mb-4 text-white flex items-center">
               <Activity className="h-4 w-4 mr-2 animate-pulse" />
-              Research Areas
+              Solutions
             </h3>
             <ul className="space-y-2 mb-6">
-              <li><a href="/research" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
+              <li><a href="/solutions" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
                 <span className="w-1 h-1 bg-gray-500 rounded-full mr-2 group-hover:bg-white transition-colors duration-300"></span>
-                Data Mining & ML
+                AI Strategy and Architecture
               </a></li>
-              <li><a href="/research" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
+              <li><a href="/solutions" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
                 <span className="w-1 h-1 bg-gray-500 rounded-full mr-2 group-hover:bg-white transition-colors duration-300"></span>
-                Big Data Management
+                R&D to Production Systems
               </a></li>
-              <li><a href="/research" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
+              <li><a href="/solutions" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
                 <span className="w-1 h-1 bg-gray-500 rounded-full mr-2 group-hover:bg-white transition-colors duration-300"></span>
-                IoT & Computer Vision
+                Applied AI and Automation
               </a></li>
             </ul>
             
@@ -96,13 +117,13 @@ const Footer = () => {
                 <span className="w-1 h-1 bg-gray-500 rounded-full mr-2 group-hover:bg-white transition-colors duration-300"></span>
                 Publications
               </a></li>
-              <li><a href="/projects" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
+              <li><a href="/portfolio" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
                 <span className="w-1 h-1 bg-gray-500 rounded-full mr-2 group-hover:bg-white transition-colors duration-300"></span>
-                Active Projects
+                Portfolio
               </a></li>
-              <li><a href="/people" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
+              <li><a href="/team" className="group text-gray-300 hover:text-white transition-all duration-300 text-sm flex items-center">
                 <span className="w-1 h-1 bg-gray-500 rounded-full mr-2 group-hover:bg-white transition-colors duration-300"></span>
-                Research Team
+                Team
               </a></li>
             </ul>
           </div>
@@ -117,13 +138,13 @@ const Footer = () => {
               <div className="flex items-start text-sm">
                 <MapPin className="h-4 w-4 text-gray-400 mr-2 mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="font-medium">NUCES Islamabad</p>
-                  <p>Pakistan</p>
+                  <p className="font-medium">GradientWise</p>
+                  <p>Remote and global</p>
                 </div>
               </div>
               <div className="flex items-center text-sm">
                 <Mail className="h-4 w-4 text-gray-400 mr-2 flex-shrink-0" />
-                <p>datainsight@nu.edu.pk</p>
+                <p>hello@gradientwise.com</p>
               </div>
             </div>
 
@@ -134,11 +155,11 @@ const Footer = () => {
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-700/50 p-3 rounded-lg hover:bg-slate-700 transition-all duration-300 hover:scale-105">
                 <div className="text-lg font-bold text-white">50+</div>
-                <div className="text-xs text-gray-300">Projects</div>
+                <div className="text-xs text-gray-300">Deliveries</div>
               </div>
               <div className="bg-slate-700/50 p-3 rounded-lg hover:bg-slate-700 transition-all duration-300 hover:scale-105">
                 <div className="text-lg font-bold text-white">200+</div>
-                <div className="text-xs text-gray-300">Papers</div>
+                <div className="text-xs text-gray-300">Research Outputs</div>
               </div>
             </div>
           </div>
@@ -148,7 +169,7 @@ const Footer = () => {
         <div className="border-t border-slate-700 mt-8 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
           <div className="flex items-center">
             <Sparkles className="h-3 w-3 mr-2 animate-twinkle" />
-            <p>&copy; 2024 DataInsight Lab, NUCES Islamabad. All rights reserved.</p>
+            <p>&copy; 2026 GradientWise. All rights reserved.</p>
           </div>
           <div className="flex space-x-4 mt-3 md:mt-0">
             <a href="/privacy" className="hover:text-white transition-colors duration-300">Privacy</a>

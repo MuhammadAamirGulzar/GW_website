@@ -66,7 +66,7 @@ const ContactPage = () => {
       formData.append("subject", `Contact Form: ${contactForm.subject}`);
       formData.append("message", contactForm.message);
       formData.append("redirect", "false");
-      formData.append("to", "asif.naeem@nu.edu.pk");
+      formData.append("to", "hello@gradientwise.com");
       formData.append("from_name", contactForm.name);
       formData.append("reply_to", contactForm.email);
 
@@ -90,7 +90,7 @@ const ContactPage = () => {
       console.error('Email Error:', err);
       
       // FALLBACK: mailto link as last resort
-      const mailtoLink = `mailto:asif.naeem@nu.edu.pk?subject=${encodeURIComponent(`Contact Form: ${contactForm.subject}`)}&body=${encodeURIComponent(`Name: ${contactForm.name}\nEmail: ${contactForm.email}\n\nMessage:\n${contactForm.message}`)}`;
+      const mailtoLink = `mailto:hello@gradientwise.com?subject=${encodeURIComponent(`Contact Form: ${contactForm.subject}`)}&body=${encodeURIComponent(`Name: ${contactForm.name}\nEmail: ${contactForm.email}\n\nMessage:\n${contactForm.message}`)}`;
       
       window.open(mailtoLink);
       
@@ -184,20 +184,22 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative bg-slate-800 text-white overflow-hidden min-h-screen flex items-center">
-        {/* Animated floating elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-2xl transform rotate-45 animate-spin-slow backdrop-blur-sm"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-white/15 rounded-full animate-bounce-slow backdrop-blur-sm"></div>
-          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-white/20 rounded-lg animate-pulse backdrop-blur-sm"></div>
-          <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-white/10 rounded-full transform rotate-12 animate-float backdrop-blur-sm"></div>
-        </div>
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden min-h-screen flex items-center">
+        {/* Particle network */}
+        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          {[...Array(20)].map((_, i) => (
+            <circle key={i} cx={`${(i * 17 + 5) % 100}%`} cy={`${(i * 23 + 10) % 100}%`} r="1.5" fill="#22d3ee" />
+          ))}
+          {[...Array(10)].map((_, i) => (
+            <line key={`l${i}`} x1={`${(i * 17 + 5) % 100}%`} y1={`${(i * 23 + 10) % 100}%`} x2={`${((i + 3) * 17 + 5) % 100}%`} y2={`${((i + 3) * 23 + 10) % 100}%`} stroke="#22d3ee" strokeWidth="0.5" />
+          ))}
+        </svg>
 
         {/* Dynamic background gradient based on mouse position */}
         <div 
             className="absolute inset-0 opacity-30 transition-all duration-1000"
             style={{
-                background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`
+                background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(6, 182, 212, 0.25) 0%, transparent 65%)`
             }}
         ></div>
 
@@ -234,7 +236,7 @@ const ContactPage = () => {
               </div>
             </div>
             <p className="text-xl md:text-2xl max-w-4xl mx-auto text-gray-300 leading-relaxed animate-fade-in-up" style={{animationDelay: '0.5s'}}>
-              Get in touch with us for collaborations, inquiries, or join our <span className="text-white font-bold animate-text-glow">research team</span>.
+              Get in touch with us for partnerships, delivery requests, or to join our <span className="text-white font-bold animate-text-glow">AI team</span>.
             </p>
           </div>
         </div>
@@ -285,7 +287,7 @@ const ContactPage = () => {
                 }`}
               >
                 <Users className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="hidden sm:inline">Join Research Team</span>
+                <span className="hidden sm:inline">Join AI Team</span>
                 <span className="sm:hidden">Join Team</span>
                 {activeForm === 'research' && <Sparkles className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 animate-twinkle" />}
               </button>
@@ -651,7 +653,7 @@ const ContactPage = () => {
                               required
                               rows={4}
                               className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-500 focus:border-transparent resize-none transition-all duration-300 hover:border-gray-300"
-                              placeholder="Why do you want to join our research team? What are your goals?"
+                              placeholder="Why do you want to join GradientWise? What are your goals?"
                             />
                           </div>
                         </div>
@@ -703,9 +705,9 @@ const ContactPage = () => {
                         <div>
                           <h3 className="font-bold mb-1 text-gray-900">Address</h3>
                           <p className="text-gray-600 leading-relaxed">
-                            DataInsight Research Lab<br />
-                             A.K Brohi Road, <br />
-                            H 11/4, Islamabad.<br />
+                            GradientWise<br />
+                            Remote-first delivery studio<br />
+                            Islamabad, Pakistan.<br />
                           </p>
                         </div>
                       </div>
@@ -722,7 +724,7 @@ const ContactPage = () => {
                         <Mail className="h-6 w-6 text-blue-600 mt-1 mr-4 flex-shrink-0 animate-pulse" />
                         <div>
                           <h3 className="font-bold mb-1 text-gray-900">Email</h3>
-                          <p className="text-gray-600">asif.naeem@nu.edu.pk</p>
+                          <p className="text-gray-600">hello@gradientwise.com</p>
                         </div>
                       </div>
 

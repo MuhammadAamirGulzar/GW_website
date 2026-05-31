@@ -19,10 +19,10 @@ const Publications = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const tabData = {
-    journals: { data: journalsList, icon: BookOpen, title: 'Journal Publications', color: 'gray', shortTitle: 'Journals' },
-    conferences: { data: conferenecesList, icon: Users, title: 'Conference Papers', color: 'gray', shortTitle: 'Conferences' },
-    workshops: { data: workshopsList, icon: Activity, title: 'Workshop Papers', color: 'gray', shortTitle: 'Workshops' },
-    bookchapters: { data: bookchaptersList, icon: FileText, title: 'Book Chapters', color: 'gray', shortTitle: 'Chapters' }
+    journals: { data: journalsList, icon: BookOpen, title: 'Journal Publications', color: 'cyan', shortTitle: 'Journals', badge: 'Q1/SCI' },
+    conferences: { data: conferenecesList, icon: Users, title: 'Conference Papers', color: 'green', shortTitle: 'Conferences', badge: 'Peer-Reviewed' },
+    workshops: { data: workshopsList, icon: Activity, title: 'Workshop Papers', color: 'purple', shortTitle: 'Workshops', badge: 'International' },
+    bookchapters: { data: bookchaptersList, icon: FileText, title: 'Book Chapters', color: 'orange', shortTitle: 'Chapters', badge: 'Invited' }
   };
 
   useEffect(() => {
@@ -61,6 +61,7 @@ const Publications = () => {
   const getColorClasses = (color) => {
     const colorMap = {
       gray: { bg: 'bg-slate-700', hover: 'hover:bg-slate-600', text: 'text-slate-600', border: 'border-slate-200' },
+      cyan: { bg: 'bg-cyan-500', hover: 'hover:bg-cyan-600', text: 'text-cyan-600', border: 'border-cyan-200' },
       blue: { bg: 'bg-blue-500', hover: 'hover:bg-blue-600', text: 'text-blue-600', border: 'border-blue-200' },
       green: { bg: 'bg-green-500', hover: 'hover:bg-green-600', text: 'text-green-600', border: 'border-green-200' },
       purple: { bg: 'bg-purple-500', hover: 'hover:bg-purple-600', text: 'text-purple-600', border: 'border-purple-200' },
@@ -76,19 +77,22 @@ const Publications = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="relative bg-slate-800 text-white overflow-hidden min-h-screen flex items-center">
-        {/* Animated background elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-32 h-32 bg-white/10 rounded-2xl transform rotate-45 animate-spin-slow backdrop-blur-sm"></div>
-          <div className="absolute top-40 right-20 w-24 h-24 bg-white/15 rounded-full animate-bounce-slow backdrop-blur-sm"></div>
-          <div className="absolute bottom-40 left-1/4 w-20 h-20 bg-white/20 rounded-lg animate-pulse backdrop-blur-sm"></div>
-        </div>
+      <div className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden min-h-screen flex items-center">
+        {/* Particle network */}
+        <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+          {[...Array(20)].map((_, i) => (
+            <circle key={i} cx={`${(i * 17 + 5) % 100}%`} cy={`${(i * 23 + 10) % 100}%`} r="1.5" fill="#22d3ee" />
+          ))}
+          {[...Array(10)].map((_, i) => (
+            <line key={`l${i}`} x1={`${(i * 17 + 5) % 100}%`} y1={`${(i * 23 + 10) % 100}%`} x2={`${((i + 3) * 17 + 5) % 100}%`} y2={`${((i + 3) * 23 + 10) % 100}%`} stroke="#22d3ee" strokeWidth="0.5" />
+          ))}
+        </svg>
 
         {/* Dynamic background gradient based on mouse position */}
                 <div 
                     className="absolute inset-0 opacity-30 transition-all duration-1000"
                     style={{
-                        background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`
+                        background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(6, 182, 212, 0.25) 0%, transparent 65%)`
                     }}
                 ></div>
 
@@ -310,7 +314,11 @@ const Publications = () => {
               >
                 {/* Year Header */}
                 <div 
-                  className="bg-gradient-to-r from-slate-700 to-slate-800 text-white p-4 sm:p-8 cursor-pointer group-hover:from-slate-600 group-hover:to-slate-700 transition-all duration-500 relative overflow-hidden"
+                  className={`bg-gradient-to-r ${{                    cyan: 'from-cyan-500 to-cyan-600 group-hover:from-cyan-400 group-hover:to-cyan-500',                    blue: 'from-blue-600 to-blue-700 group-hover:from-blue-500 group-hover:to-blue-600',
+                    green: 'from-green-600 to-green-700 group-hover:from-green-500 group-hover:to-green-600',
+                    purple: 'from-purple-600 to-purple-700 group-hover:from-purple-500 group-hover:to-purple-600',
+                    orange: 'from-orange-500 to-orange-600 group-hover:from-orange-400 group-hover:to-orange-500',
+                  }[currentData.color] || 'from-slate-700 to-slate-800 group-hover:from-slate-600 group-hover:to-slate-700'} text-white p-4 sm:p-8 cursor-pointer transition-all duration-500 relative overflow-hidden`}
                   onClick={() => toggleYear(yearData.year)}
                 >
                   <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -360,6 +368,9 @@ const Publications = () => {
                                   <div className="absolute inset-0 bg-gray-300/30 rounded-full opacity-0 group-hover/item:opacity-100 animate-ping transition-opacity duration-500"></div>
                                 </div>
                                 <div className="flex-1 min-w-0">
+                                  <div className="flex items-start gap-3 mb-1">
+                                    <span className={`flex-shrink-0 text-xs font-semibold px-2 py-0.5 rounded-full ${{ cyan: 'bg-cyan-100 text-cyan-700', blue: 'bg-blue-100 text-blue-700', green: 'bg-green-100 text-green-700', purple: 'bg-purple-100 text-purple-700', orange: 'bg-orange-100 text-orange-700' }[currentData.color] || 'bg-gray-100 text-gray-700'}`}>{currentData.badge}</span>
+                                  </div>
                                   <p className="text-base sm:text-lg text-gray-800 leading-relaxed group-hover/item:text-gray-900 transition-colors duration-300">
                                     {work.data}
                                   </p>
@@ -373,7 +384,7 @@ const Publications = () => {
                                   href={work.pdflink}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="group/btn inline-flex items-center px-4 py-3 sm:px-8 sm:py-4 bg-slate-700 text-white font-bold rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-110 overflow-hidden relative text-sm sm:text-base"
+                                  className={`group/btn inline-flex items-center px-4 py-3 sm:px-8 sm:py-4 ${colors.bg} text-white font-bold rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 overflow-hidden relative text-sm sm:text-base`}
                                 >
                                   <div className="absolute inset-0 bg-slate-600 transform scale-x-0 group-hover/btn:scale-x-100 transition-transform duration-500 origin-left"></div>
                                   <span className="relative z-10 flex items-center">

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Users, BookOpen, Cpu, Database, Brain, Code, Server, Shield, GitBranch, Zap, Monitor, HardDrive, Sparkles, Activity } from 'lucide-react';
 import { FaDollarSign } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
@@ -123,8 +123,30 @@ const HomePage = () => {
   const [isResearchHovering, setIsResearchHovering] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
+
+  // Typing animation
+  const typingWords = ['Machine Learning', 'Data Mining', 'Computer Vision', 'Internet of Things', 'Social Analytics'];
+  const [typingIndex, setTypingIndex] = useState(0);
+  const [displayText, setDisplayText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Scroll reveal
+  const statsRef = useRef(null);
+  const [statsVisible, setStatsVisible] = useState(false);
+
   const featuredNews = realData.news.slice(0, 3);
   const researchAreas = realData.research;
+
+  // Category color map for research area cards
+  const categoryColors = {
+    'Smart Media': { topBorder: 'border-t-4 border-t-pink-500', iconBg: 'group-hover:bg-pink-50', iconText: 'group-hover:text-pink-600', accentBar: 'from-pink-400 to-pink-600', cardBg: 'group-hover:bg-pink-50/30' },
+    'eHealth':     { topBorder: 'border-t-4 border-t-purple-500', iconBg: 'group-hover:bg-purple-50', iconText: 'group-hover:text-purple-600', accentBar: 'from-purple-400 to-purple-600', cardBg: 'group-hover:bg-purple-50/30' },
+    'Ebusiness':   { topBorder: 'border-t-4 border-t-blue-500', iconBg: 'group-hover:bg-blue-50', iconText: 'group-hover:text-blue-600', accentBar: 'from-blue-400 to-blue-600', cardBg: 'group-hover:bg-blue-50/30' },
+    'eDocuments':  { topBorder: 'border-t-4 border-t-indigo-500', iconBg: 'group-hover:bg-indigo-50', iconText: 'group-hover:text-indigo-600', accentBar: 'from-indigo-400 to-indigo-600', cardBg: 'group-hover:bg-indigo-50/30' },
+    'Smart City':  { topBorder: 'border-t-4 border-t-orange-500', iconBg: 'group-hover:bg-orange-50', iconText: 'group-hover:text-orange-600', accentBar: 'from-orange-400 to-orange-600', cardBg: 'group-hover:bg-orange-50/30' },
+    'Agro Tech':   { topBorder: 'border-t-4 border-t-green-500', iconBg: 'group-hover:bg-green-50', iconText: 'group-hover:text-green-600', accentBar: 'from-green-400 to-green-600', cardBg: 'group-hover:bg-green-50/30' },
+  };
+  const defaultCatColor = { topBorder: 'border-t-4 border-t-cyan-500', iconBg: 'group-hover:bg-cyan-50', iconText: 'group-hover:text-cyan-600', accentBar: 'from-cyan-400 to-cyan-600', cardBg: 'group-hover:bg-cyan-50/30' };
 
   // Calculate cards per view based on screen size
   const getCardsPerView = () => {
@@ -179,6 +201,39 @@ const HomePage = () => {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
+  // Typing animation effect
+  useEffect(() => {
+    const currentWord = typingWords[typingIndex];
+    const speed = isDeleting ? 45 : 95;
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        if (displayText.length < currentWord.length) {
+          setDisplayText(currentWord.slice(0, displayText.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 1800);
+        }
+      } else {
+        if (displayText.length > 0) {
+          setDisplayText(displayText.slice(0, -1));
+        } else {
+          setIsDeleting(false);
+          setTypingIndex((prev) => (prev + 1) % typingWords.length);
+        }
+      }
+    }, speed);
+    return () => clearTimeout(timeout);
+  }, [displayText, isDeleting, typingIndex]);
+
+  // Scroll reveal for stats section
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setStatsVisible(true); },
+      { threshold: 0.15 }
+    );
+    if (statsRef.current) observer.observe(statsRef.current);
+    return () => observer.disconnect();
+  }, []);
+
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % featuredNews.length);
   };
@@ -220,97 +275,72 @@ const HomePage = () => {
       <div
         className="absolute inset-0 opacity-30 transition-all duration-1000"
         style={{
-          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(59, 130, 246, 0.3) 0%, transparent 70%)`,
+          background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(6, 182, 212, 0.25) 0%, transparent 65%)`,
         }}
       ></div>
+
+      {/* Particle network dots */}
+      <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+        {[...Array(20)].map((_, i) => (
+          <circle
+            key={i}
+            cx={`${(i * 17 + 5) % 100}%`}
+            cy={`${(i * 23 + 10) % 100}%`}
+            r="1.5"
+            fill="#22d3ee"
+          />
+        ))}
+        {[...Array(10)].map((_, i) => (
+          <line
+            key={`l${i}`}
+            x1={`${(i * 17 + 5) % 100}%`} y1={`${(i * 23 + 10) % 100}%`}
+            x2={`${((i + 3) * 17 + 5) % 100}%`} y2={`${((i + 3) * 23 + 10) % 100}%`}
+            stroke="#22d3ee" strokeWidth="0.5"
+          />
+        ))}
+      </svg>
 
       {/* Main Content */}
       <div className="relative max-w-5xl mx-auto px-2 py-16 sm:px-6 lg:px-8 z-10">
         <div className="text-center space-y-8">
           {/* Title */}
-          <div className="relative">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 relative">
-              <span className="relative inline-block group">
-                <span className="text-white animate-gradient-x bg-300%">
-                  "The Goal is to turn Data into Information, and Information into Insight."
+          <div className="relative animate-fade-in-up">
+            {/* University badge */}
+            <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 text-gray-200 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full mb-6 tracking-wide">
+              <Database className="h-3.5 w-3.5 text-cyan-400" />
+              National University of Computer & Emerging Sciences · Islamabad
+            </div>
+
+            {/* Main heading — lab name */}
+            <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 font-display tracking-tight relative">
+              <span className="relative inline-block">
+                <span className="text-white">
+                  GradientWise
                 </span>
-                <span className="absolute -inset-2 bg-white/25 blur-2xl animate-pulse-glow"></span>
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/25 to-transparent animate-shimmer transform -skew-x-12"></span>
+                <span className="absolute -inset-3 bg-cyan-400/15 blur-3xl rounded-full pointer-events-none"></span>
               </span>
             </h1>
-            <div className="text-lg sm:text-xl md:text-2xl font-light text-gray-100 tracking-wide">
-              <span className="inline-flex items-center animate-fade-in-up">
-                <div className="relative mr-2 sm:mr-4">
-                  <Database className="h-6 w-6 sm:h-8 md:h-10 sm:w-8 md:w-10 text-white animate-spin-slow" />
-                  <div className="absolute inset-0 bg-white/25 rounded-full animate-ping"></div>
-                </div>
-                National University Of Computer And Emerging Sciences, Islamabad
-                <div className="relative ml-2 sm:ml-4">
-                  <Code className="h-6 w-6 sm:h-8 md:h-10 sm:w-8 md:w-10 text-white animate-pulse" />
-                  <div
-                    className="absolute inset-0 bg-white/25 rounded-full animate-ping"
-                    style={{ animationDelay: "1s" }}
-                  ></div>
-                </div>
+
+            {/* Typing animation line */}
+            <div className="text-xl sm:text-2xl md:text-3xl font-semibold text-cyan-300 mb-6 min-h-[2.5rem] flex items-center justify-center gap-2">
+              <span className="text-gray-300">Specializing in</span>
+              <span className="relative">
+                <span>{displayText}</span>
+                <span className="inline-block w-0.5 h-6 sm:h-7 bg-cyan-400 ml-0.5 align-middle animate-pulse"></span>
               </span>
             </div>
+
+            {/* Quote */}
+            <p className="text-sm sm:text-base italic text-gray-400 max-w-2xl mx-auto leading-relaxed border-l-2 border-cyan-500/40 pl-4 text-left sm:text-center sm:border-l-0 sm:pl-0">
+              "The Goal is to turn Data into Information, and Information into Insight."
+            </p>
           </div>
 
           <p
-            className="text-lg sm:text-xl md:text-2xl max-w-4xl mx-auto text-gray-100 leading-relaxed animate-fade-in-up"
+            className="text-base sm:text-lg md:text-xl max-w-3xl mx-auto text-gray-300 leading-relaxed animate-fade-in-up px-4"
             style={{ animationDelay: "0.5s" }}
           >
-            Promoting research in all aspects of{" "}
-            <span className="text-white font-bold animate-text-glow">Data Science</span>.
-          </p>
-
-          <p
-            className="text-base sm:text-lg md:text-xl max-w-5xl mx-auto text-gray-100 leading-relaxed animate-fade-in-up px-4"
-            style={{ animationDelay: "0.5s" }}
-          >
-            Data Science is poised to become one of the most intensively research areas of Computer Science discipline.{" "}
-            <span
-              className="text-white font-bold animate-text-glow"
-              style={{ animationDelay: "1s" }}
-            >
-              DataInsight Lab
-            </span>{" "}
-            focuses its research in{" "}
-            <span
-              className="text-white font-bold animate-text-glow"
-              style={{ animationDelay: "0.5s" }}
-            >
-              Data Mining & Machine Learning
-            </span>
-            ,{" "}
-            <span
-              className="text-white font-bold animate-text-glow"
-              style={{ animationDelay: "1s" }}
-            >
-              Big Data Management
-            </span>
-            ,{" "}
-            <span
-              className="text-white font-bold animate-text-glow"
-              style={{ animationDelay: "1.5s" }}
-            >
-              Social Data Analytics
-            </span>
-            ,{" "}
-            <span
-              className="text-white font-bold animate-text-glow"
-              style={{ animationDelay: "2s" }}
-            >
-              Internet of Things (IoT)
-            </span>
-            , and{" "}
-            <span
-              className="text-white font-bold animate-text-glow"
-              style={{ animationDelay: "2.5s" }}
-            >
-              Computer Vision
-            </span>
-            . We are working on cutting edge developments in these areas.
+            We combine deep research rigor with production-grade engineering to deliver scalable AI systems — from prototype to deployment.
           </p>
 
           <div
@@ -318,17 +348,16 @@ const HomePage = () => {
             style={{ animationDelay: "1s" }}
           >
             <Link
-              to="/research"
-              className="group relative bg-slate-800 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-2xl font-bold overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-slate-400/25 hover:-translate-y-2 hover:scale-105 transform-gpu border border-slate-600"
+              to="/solutions"
+              className="group relative bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-6 sm:px-10 py-4 sm:py-5 rounded-2xl font-bold overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-400/40 hover:-translate-y-2 hover:scale-105 transform-gpu border border-cyan-400/50"
             >
               <span className="relative z-10 flex items-center justify-center">
-                <Database className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 animate-pulse" />
-                Explore Research
+                <Database className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6" />
+                Explore Solutions
                 <ArrowRight className="ml-2 sm:ml-3 h-5 w-5 sm:h-6 sm:w-6 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
               </span>
-              <div className="absolute inset-0 bg-slate-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
-              <div className="absolute inset-0 bg-white/15 transform scale-0 group-hover:scale-100 transition-transform duration-300 rounded-2xl"></div>
-              <div className="absolute -inset-1 bg-slate-800 opacity-0 group-hover:opacity-75 blur-lg transition-opacity duration-500 animate-pulse"></div>
+              <div className="absolute inset-0 bg-cyan-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
+              <div className="absolute -inset-1 bg-cyan-400/40 opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-500"></div>
             </Link>
 
             <Link
@@ -359,17 +388,17 @@ const HomePage = () => {
     </div>
 
       {/* Stats Section - Updated with Real Data */}
-      <div className="bg-white py-16 sm:py-24 md:py-32">
+      <div ref={statsRef} className="bg-white py-16 sm:py-24 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            <div className="group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:rotate-1 border border-gray-200 hover:border-gray-300 relative overflow-hidden">
-              {/* Background effect */}
-              <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div className={`group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:rotate-1 border border-gray-200 hover:border-t-cyan-400 hover:border-t-4 relative overflow-hidden reveal ${statsVisible ? 'is-visible' : ''}`}>
+              {/* Cyan top accent on hover */}
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-400 to-cyan-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-t-3xl"></div>
+              <div className="absolute inset-0 bg-cyan-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="flex justify-center mb-6 sm:mb-8">
-                  <div className="relative bg-gray-100 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
-                    <Server className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:animate-pulse" />
-                    <div className="absolute inset-0 bg-gray-300/30 rounded-3xl animate-ping group-hover:animate-pulse"></div>
+                  <div className="relative bg-gray-100 group-hover:bg-cyan-50 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-xl group-hover:shadow-cyan-100">
+                    <Server className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:text-cyan-600 transition-colors duration-300" />
                     <div className="absolute -inset-2 bg-gray-400/20 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
                 </div>
@@ -378,61 +407,61 @@ const HomePage = () => {
               </div>
               {/* Sparkle effects */}
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 animate-twinkle" />
+                <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-cyan-400" />
               </div>
             </div>
-            
-            <div className="group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:-rotate-1 border border-gray-200 hover:border-gray-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+            {/* Publications card */}
+            <div className={`group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:-rotate-1 border border-gray-200 relative overflow-hidden reveal ${statsVisible ? 'is-visible' : ''}`} style={{transitionDelay: '0.1s'}}>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-violet-400 to-violet-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-t-3xl"></div>
+              <div className="absolute inset-0 bg-violet-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="flex justify-center mb-6 sm:mb-8">
-                  <div className="relative bg-gray-100 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
-                    <Brain className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:animate-spin-slow" />
-                    <div className="absolute inset-0 bg-gray-300/30 rounded-3xl animate-ping" style={{animationDelay: '0.5s'}}></div>
-                    <div className="absolute -inset-2 bg-gray-400/20 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative bg-gray-100 group-hover:bg-violet-50 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-xl group-hover:shadow-violet-100">
+                    <Brain className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:text-violet-600 transition-colors duration-300" />
                   </div>
                 </div>
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 group-hover:scale-110 transition-all duration-500 group-hover:animate-bounce-once">{realStats.totalPublications}+</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 group-hover:scale-110 transition-all duration-500">{realStats.totalPublications}+</div>
                 <div className="text-gray-600 uppercase text-xs sm:text-sm font-bold tracking-wider">Research Papers</div>
               </div>
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 animate-pulse" />
+                <Activity className="h-5 w-5 sm:h-6 sm:w-6 text-violet-400" />
               </div>
             </div>
-            
-            <div className="group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:rotate-1 border border-gray-200 hover:border-gray-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+            {/* Researchers card */}
+            <div className={`group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:rotate-1 border border-gray-200 relative overflow-hidden reveal ${statsVisible ? 'is-visible' : ''}`} style={{transitionDelay: '0.2s'}}>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-400 to-emerald-600 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-t-3xl"></div>
+              <div className="absolute inset-0 bg-emerald-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="flex justify-center mb-6 sm:mb-8">
-                  <div className="relative bg-gray-100 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
-                    <Users className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:animate-bounce" />
-                    <div className="absolute inset-0 bg-gray-300/30 rounded-3xl animate-ping" style={{animationDelay: '1s'}}></div>
-                    <div className="absolute -inset-2 bg-gray-400/20 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative bg-gray-100 group-hover:bg-emerald-50 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-xl group-hover:shadow-emerald-100">
+                    <Users className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:text-emerald-600 transition-colors duration-300" />
                   </div>
                 </div>
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 group-hover:scale-110 transition-all duration-500 group-hover:animate-bounce-once">{realStats.totalResearchers}+</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 group-hover:scale-110 transition-all duration-500">{realStats.totalResearchers}+</div>
                 <div className="text-gray-600 uppercase text-xs sm:text-sm font-bold tracking-wider">PhD Researchers</div>
               </div>
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 animate-bounce" />
+                <Zap className="h-5 w-5 sm:h-6 sm:w-6 text-emerald-400" />
               </div>
             </div>
-            
-            <div className="group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:-rotate-1 border border-gray-200 hover:border-gray-300 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+            {/* Funding card */}
+            <div className={`group bg-white p-6 sm:p-8 md:p-10 rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-700 text-center transform hover:-translate-y-6 hover:-rotate-1 border border-gray-200 relative overflow-hidden reveal ${statsVisible ? 'is-visible' : ''}`} style={{transitionDelay: '0.3s'}}>
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-amber-400 to-orange-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left rounded-t-3xl"></div>
+              <div className="absolute inset-0 bg-amber-50/30 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
               <div className="relative z-10">
                 <div className="flex justify-center mb-6 sm:mb-8">
-                  <div className="relative bg-gray-100 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-2xl">
-                    <FaDollarSign className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:animate-spin" />
-                    <div className="absolute inset-0 bg-gray-300/30 rounded-3xl animate-ping" style={{animationDelay: '1.5s'}}></div>
-                    <div className="absolute -inset-2 bg-gray-400/20 rounded-3xl blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                  <div className="relative bg-gray-100 group-hover:bg-amber-50 p-4 sm:p-6 rounded-3xl group-hover:scale-125 transition-all duration-500 shadow-lg group-hover:shadow-xl group-hover:shadow-amber-100">
+                    <FaDollarSign className="h-8 w-8 sm:h-10 sm:w-10 text-gray-600 group-hover:text-amber-600 transition-colors duration-300" />
                   </div>
                 </div>
-                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 group-hover:scale-110 transition-all duration-500 group-hover:animate-bounce-once">{realStats.totalFunding}</div>
+                <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-3 group-hover:scale-110 transition-all duration-500">{realStats.totalFunding}</div>
                 <div className="text-gray-600 uppercase text-xs sm:text-sm font-bold tracking-wider">Research Funding</div>
               </div>
               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                <Database className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 animate-pulse" />
+                <Database className="h-5 w-5 sm:h-6 sm:w-6 text-amber-400" />
               </div>
             </div>
           </div>
@@ -482,7 +511,9 @@ const HomePage = () => {
                   transform: `translateX(-${Math.min(currentResearchSlide, maxSlide) * (100 / cardsPerView)}%)` 
                 }}
               >
-                {researchAreas.map((area, index) => (
+                {researchAreas.map((area, index) => {
+                  const catColor = categoryColors[area.originalCategory] || defaultCatColor;
+                  return (
                   <div 
                     key={area.id} 
                     className={`${
@@ -491,55 +522,47 @@ const HomePage = () => {
                     } flex-shrink-0 px-2 sm:px-3 md:px-5`}
                   >
                     <Card 
-                      className="overflow-hidden transition-all duration-1000 hover:shadow-3xl hover:-translate-y-4 sm:hover:-translate-y-6 md:hover:-translate-y-8 hover:rotate-1 group border-2 border-gray-200 hover:border-gray-400 relative h-full"
+                      className={`overflow-hidden transition-all duration-700 hover:shadow-2xl hover:-translate-y-4 sm:hover:-translate-y-6 group border-2 border-gray-200 relative h-full ${catColor.topBorder}`}
                       padding="p-0"
                     >
-                      {/* Background gradient effect */}
-                      <div className="absolute inset-0 bg-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      {/* Category accent bar on hover */}
+                      <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${catColor.accentBar} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left`}></div>
+                      <div className={`absolute inset-0 opacity-0 ${catColor.cardBg} transition-opacity duration-500`}></div>
                       
                       <div className="relative overflow-hidden">
                         <img 
                           src={area.image} 
                           alt={area.title} 
-                          className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover transition-all duration-1000 group-hover:scale-125 group-hover:rotate-3" 
+                          className="w-full h-48 sm:h-56 md:h-64 lg:h-72 object-cover transition-all duration-1000 group-hover:scale-110" 
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700 flex items-end p-4 sm:p-6 md:p-8">
                           <button
                             onClick={() => handleViewProjects(area.originalCategory)}
                             className="text-white font-bold hover:text-gray-200 flex items-center transform translate-y-8 group-hover:translate-y-0 transition-all duration-700 bg-white/10 backdrop-blur-md px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-white/20 text-sm sm:text-base"
                           >
-                            <Monitor className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 animate-pulse" />
+                            <Monitor className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5" />
                             View Projects 
-                            <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110" />
+                            <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 transition-transform duration-300 group-hover:translate-x-2" />
                           </button>
-                        </div>
-                        {/* Sparkle overlay */}
-                        <div className="absolute top-3 right-3 sm:top-4 sm:right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                          <Sparkles className="h-6 w-6 sm:h-7 sm:w-7 md:h-8 md:w-8 text-white animate-twinkle" />
                         </div>
                       </div>
                       
                       <div className="p-6 sm:p-8 md:p-10 relative z-10">
-                        <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900 group-hover:text-gray-700 transition-all duration-500 group-hover:scale-105">{area.title}</h3>
-                        <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base md:text-lg line-clamp-3 sm:line-clamp-none">{area.description}</p>
-                        <div className="flex justify-between text-xs sm:text-sm text-gray-500 border-t-2 border-gray-100 group-hover:border-gray-300 pt-4 sm:pt-6 transition-colors duration-300">
-                          <span className="flex items-center group-hover:text-gray-700 transition-colors duration-300 font-semibold">
-                            <GitBranch className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 group-hover:animate-bounce" /> {area.projects} Projects
+                        <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-900 group-hover:text-gray-700 transition-colors duration-300">{area.title}</h3>
+                        <p className="text-gray-600 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base line-clamp-3">{area.description}</p>
+                        <div className="flex justify-between text-xs sm:text-sm text-gray-500 border-t-2 border-gray-100 pt-4 sm:pt-6">
+                          <span className="flex items-center font-semibold">
+                            <GitBranch className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" /> {area.projects} Projects
                           </span>
-                          <span className="flex items-center group-hover:text-gray-700 transition-colors duration-300 font-semibold">
-                            <HardDrive className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2 group-hover:animate-pulse" /> {area.publications} Papers
+                          <span className="flex items-center font-semibold">
+                            <HardDrive className="h-4 w-4 sm:h-5 sm:w-5 mr-1 sm:mr-2" /> {area.publications} Papers
                           </span>
                         </div>
                       </div>
-                      
-                      {/* Enhanced hover effect overlay */}
-                      <div className="absolute inset-0 bg-gray-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                      
-                      {/* Corner accent */}
-                      <div className="absolute top-0 right-0 w-0 h-0 border-l-[15px] sm:border-l-[20px] border-b-[15px] sm:border-b-[20px] border-l-transparent border-b-gray-300/20 group-hover:border-b-gray-400/40 transition-colors duration-500"></div>
                     </Card>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -593,13 +616,13 @@ const HomePage = () => {
           
           <div className="text-center mt-12 sm:mt-16 md:mt-20">
             <Link
-              to="/research"
+              to="/solutions"
               className="group inline-flex items-center px-8 sm:px-10 md:px-12 py-4 sm:py-5 md:py-6 bg-gray-900 text-white font-bold rounded-xl sm:rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:-translate-y-3 hover:scale-110 relative overflow-hidden border border-gray-800"
             >
               <div className="absolute inset-0 bg-gray-800 transform scale-0 group-hover:scale-100 transition-transform duration-500"></div>
               <span className="relative z-10 flex items-center text-sm sm:text-base md:text-lg">
                 <Shield className="mr-3 sm:mr-4 h-5 w-5 sm:h-6 sm:w-6 group-hover:animate-spin" />
-                View All Research Areas
+                View All Solutions
                 <ArrowRight className="ml-3 sm:ml-4 h-5 w-5 sm:h-6 sm:w-6 transition-all duration-300 group-hover:translate-x-3 group-hover:scale-125" />
               </span>
               <div className="absolute -inset-1 bg-gray-600/50 opacity-0 group-hover:opacity-75 blur-xl transition-opacity duration-500"></div>
@@ -755,64 +778,64 @@ const HomePage = () => {
       </div>
 
       {/* Call to Action Section - Mobile Responsive */}
-      <div className="relative py-16 sm:py-24 md:py-32 bg-slate-800 text-white overflow-hidden">
-        {/* Enhanced background effects */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-full h-full opacity-20">
-            <div className="absolute top-10 sm:top-20 left-10 sm:left-20 w-32 sm:w-48 h-32 sm:h-48 border-2 border-white/30 rounded-3xl transform rotate-45 animate-spin-slow"></div>
-            <div className="absolute bottom-10 sm:bottom-20 right-10 sm:right-20 w-28 sm:w-40 h-28 sm:h-40 border-2 border-white/30 transform rotate-12 animate-bounce-slow"></div>
-            <div className="absolute top-1/2 left-1/2 w-60 sm:w-80 h-60 sm:h-80 border-2 border-white/30 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-pulse"></div>
-          </div>
+      <div className="relative py-16 sm:py-24 md:py-32 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
+        {/* Subtle background glow */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-violet-500/10 rounded-full blur-3xl"></div>
         </div>
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10 relative">
           <div className="mb-8 sm:mb-12">
-            <div className="relative inline-block mb-6 sm:mb-8">
-              <Cpu className="h-12 w-12 sm:h-16 md:h-20 sm:w-16 md:w-20 text-yellow-400 mx-auto animate-spin-slow" />
-              <div className="absolute inset-0 bg-white/30 rounded-full animate-ping"></div>
-              <div className="absolute -inset-2 sm:-inset-4 bg-white/20 rounded-full animate-pulse blur-lg"></div>
+            <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-cyan-300 text-xs sm:text-sm font-semibold px-4 py-2 rounded-full mb-6 tracking-wide">
+              <Zap className="h-3.5 w-3.5" />
+              Let's Work Together
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 relative">
-              <span className="text-white animate-gradient-x">
-                Ready to Innovate?
-              </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 sm:mb-8 font-display">
+              Ready to Innovate?
             </h2>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-12 sm:mb-16 max-w-4xl mx-auto text-gray-300 leading-relaxed px-4">
-              Join our team of world-class researchers and engineers in pushing the boundaries of computing science and technological innovation.
+            <p className="text-base sm:text-lg md:text-xl mb-12 sm:mb-16 max-w-3xl mx-auto text-gray-300 leading-relaxed px-4">
+              Partner with our engineers and researchers to launch reliable AI systems faster.
             </p>
           </div>
           
-          <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 justify-center">
+          {/* Glass cards row */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto mb-12">
+            {[
+              { icon: <Brain className="h-6 w-6 text-violet-400" />, label: 'Research Collaboration' },
+              { icon: <Users className="h-6 w-6 text-cyan-400" />, label: 'Join the Lab' },
+              { icon: <Database className="h-6 w-6 text-emerald-400" />, label: 'Data Partnerships' },
+            ].map((item) => (
+              <div key={item.label} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-5 hover:bg-white/10 hover:border-white/20 transition-all duration-300">
+                <div className="flex flex-col items-center gap-2">
+                  {item.icon}
+                  <span className="text-sm font-medium text-gray-300">{item.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
             <Link
                 to="/contact"
-                className="group relative bg-gray-900 text-white px-8 sm:px-12 md:px-14 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-bold overflow-hidden transition-all duration-500 hover:shadow-3xl hover:shadow-gray-500/25 hover:-translate-y-3 hover:scale-110 transform-gpu border border-gray-700"
+                className="group relative bg-gradient-to-r from-cyan-500 to-cyan-600 text-white px-8 sm:px-12 py-4 sm:py-5 rounded-2xl font-bold overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-cyan-400/40 hover:-translate-y-2 border border-cyan-400/50"
               >
-                <span className="relative z-10 flex items-center justify-center text-base sm:text-lg md:text-xl">
-                  <Users className="mr-3 sm:mr-4 h-5 w-5 sm:h-6 md:h-7 sm:w-6 md:w-7 group-hover:animate-bounce" />
-                  Join Our Research Team
-                  <Sparkles className="ml-3 sm:ml-4 h-5 w-5 sm:h-6 md:h-7 sm:w-6 md:w-7 opacity-0 group-hover:opacity-100 animate-twinkle transition-opacity duration-300" />
+                <span className="relative z-10 flex items-center justify-center text-base sm:text-lg">
+                  <Users className="mr-3 h-5 w-5 sm:h-6 sm:w-6" />
+                  Join Our Team
                 </span>
-
-                {/* Multiple overlay effects */}
-                <div className="absolute inset-0 bg-gray-800 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
-                <div className="absolute inset-0 bg-white/20 transform scale-0 group-hover:scale-100 transition-transform duration-400 rounded-xl sm:rounded-2xl"></div>
-                <div className="absolute -inset-2 bg-gray-600/50 opacity-0 group-hover:opacity-75 blur-xl transition-opacity duration-500"></div>
+                <div className="absolute inset-0 bg-cyan-600 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-500"></div>
               </Link>
-
-            
-                <Link
-                  to="/people"
-                  className="group relative border-3 border-white/40 text-white px-8 sm:px-12 md:px-14 py-4 sm:py-5 md:py-6 rounded-xl sm:rounded-2xl font-bold transition-all duration-500 hover:bg-white/10 hover:border-white hover:text-white hover:-translate-y-3 hover:scale-110 backdrop-blur-md overflow-hidden"
-                >
-                  <span className="relative z-10 flex items-center justify-center text-base sm:text-lg md:text-xl">
-                    <Database className="mr-3 sm:mr-4 h-5 w-5 sm:h-6 md:h-7 sm:w-6 md:w-7 group-hover:animate-pulse" />
-                    Explore Collaborations
-                    <ArrowRight className="ml-3 sm:ml-4 h-5 w-5 sm:h-6 md:h-7 sm:w-6 md:w-7 opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-2" />
-                  </span>
-                  <div className="absolute inset-0 bg-white/10 transform scale-0 group-hover:scale-100 transition-transform duration-400 rounded-xl sm:rounded-2xl"></div>
-                  <div className="absolute -inset-1 bg-white/20 opacity-0 group-hover:opacity-50 blur-lg transition-opacity duration-500"></div>
-                </Link>
-
+            <Link
+                to="/team"
+                className="group relative bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 sm:px-12 py-4 sm:py-5 rounded-2xl font-bold transition-all duration-500 hover:bg-white/15 hover:border-white/30 hover:-translate-y-2"
+              >
+                <span className="relative z-10 flex items-center justify-center text-base sm:text-lg">
+                  <Database className="mr-3 h-5 w-5 sm:h-6 sm:w-6" />
+                  Explore Collaborations
+                  <ArrowRight className="ml-3 h-5 w-5 sm:h-6 sm:w-6 transition-transform duration-300 group-hover:translate-x-2" />
+                </span>
+              </Link>
           </div>
         </div>
       </div>
