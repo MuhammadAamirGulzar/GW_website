@@ -23,13 +23,13 @@ const PeoplePage = () => {
   // Updated data structure with consistent fields
 
   // Flatten all people into a single array
-  const allPeople = [
+  const allPeople = useMemo(() => [
     peopleData.director,
     ...peopleData.internationalCollaborators,
     ...peopleData.localCollaborators,
     ...peopleData.internationalStudents,
     ...peopleData.localStudents
-  ];
+  ], []);
 
   const categories = ['All', 'Faculty', 'Research Staff', 'Graduate Students'];
 
