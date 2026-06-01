@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Calendar, ExternalLink, Award, Users, FileText, ChevronDown, ChevronRight, Sparkles, Activity, Brain, Zap, Database, Search, Filter, TrendingUp, Star } from 'lucide-react';
+import { BookOpen, Calendar, ExternalLink, Users, FileText, ChevronDown, ChevronRight, Sparkles, Activity, Brain, Zap, Database, Search, Filter, TrendingUp } from 'lucide-react';
 import journalsList from './../classes/journalsData';
 import conferenecesList from './../classes/conferencesData';
 import workshopsList from './../classes/workshopsData';

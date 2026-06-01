@@ -1,5 +1,5 @@
 import React from 'react';
-import { Database, Twitter, Linkedin, Github, Mail, MapPin, Phone, Code, Sparkles, Activity, Monitor } from 'lucide-react';
+import { Database, Twitter, Linkedin, Github, Mail, MapPin, Sparkles, Activity, Monitor } from 'lucide-react';
 
 const Footer = () => {
   return (
@@ -72,16 +72,16 @@ const Footer = () => {
               Architecting Intelligent Systems.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
+              <a href="https://twitter.com" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
                 <Twitter className="h-5 w-5 relative z-10 group-hover:animate-bounce" />
               </a>
-              <a href="#" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
+              <a href="https://linkedin.com" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
                 <Linkedin className="h-5 w-5 relative z-10 group-hover:animate-bounce" />
               </a>
-              <a href="#" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
+              <a href="https://github.com" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
                 <Github className="h-5 w-5 relative z-10 group-hover:animate-bounce" />
               </a>
-              <a href="#" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
+              <a href="mailto:hello@gradientwise.com" className="group text-gray-400 hover:text-white transition-all duration-300 hover:scale-110 relative p-2 rounded-full hover:bg-slate-700">
                 <Mail className="h-5 w-5 relative z-10 group-hover:animate-bounce" />
               </a>
             </div>

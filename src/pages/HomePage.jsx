@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { ArrowRight, Calendar, ChevronLeft, ChevronRight, Users, BookOpen, Cpu, Database, Brain, Code, Server, Shield, GitBranch, Zap, Monitor, HardDrive, Sparkles, Activity } from 'lucide-react';
 import { FaDollarSign } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
@@ -125,7 +125,7 @@ const HomePage = () => {
   const [viewportWidth, setViewportWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
   // Typing animation
-  const typingWords = ['Machine Learning', 'Data Mining', 'Computer Vision', 'Internet of Things', 'Social Analytics'];
+  const typingWords = useMemo(() => ['Machine Learning', 'Data Mining', 'Computer Vision', 'Internet of Things', 'Social Analytics'], []);
   const [typingIndex, setTypingIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
@@ -222,7 +222,7 @@ const HomePage = () => {
       }
     }, speed);
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, typingIndex]);
+  }, [displayText, isDeleting, typingIndex, typingWords]);
 
   // Scroll reveal for stats section
   useEffect(() => {
@@ -936,13 +936,13 @@ const HomePage = () => {
         
         /* Ensure smooth transitions on mobile */
         @media (max-width: 640px) {
-          .hover\:scale-105:hover {
+          .hover\\:scale-105:hover {
             transform: scale(1.02);
           }
-          .hover\:-translate-y-8:hover {
+          .hover\\:-translate-y-8:hover {
             transform: translateY(-0.5rem);
           }
-          .group:hover .group-hover\:scale-125 {
+          .group:hover .group-hover\\:scale-125 {
             transform: scale(1.1);
           }
         }

@@ -1,12 +1,12 @@
-﻿import React, { useState, useMemo , useEffect} from 'react';
-import { Users, BookOpen, ExternalLink, ChevronDown, ChevronUp, Globe, MapPin, GraduationCap, Star, Award, Building2, User, Mail, ArrowRight, Sparkles, Activity, Brain, Code, Zap, Database, Server, Search, Linkedin, Twitter } from 'lucide-react';
+import React, { useState, useMemo , useEffect} from 'react';
+import { Users, BookOpen, ExternalLink, ChevronDown, ChevronUp, Globe, MapPin, GraduationCap, Award, Building2, Mail, ArrowRight, Search, Linkedin, Twitter } from 'lucide-react';
 import {Link } from 'react-router-dom';
 import peopleData from './../data/peopleData.json';
 const PeoplePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [expandedBios, setExpandedBios] = useState({});
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition] = useState({ x: 0, y: 0 });
   
 
   useEffect(() => {
@@ -63,7 +63,7 @@ const PeoplePage = () => {
     }
     
     return filtered;
-  }, [searchTerm, selectedCategory]);
+  }, [searchTerm, selectedCategory, allPeople]);
 
   const PersonCard = ({ person }) => {
     const isExpanded = expandedBios[person.id];

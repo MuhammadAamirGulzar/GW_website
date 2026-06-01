@@ -325,7 +325,7 @@ const ContactForm = ({ isOpen, onClose, projectTitle, showToast }) => {
 const ProjectsPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [mousePosition] = useState({ x: 0, y: 0 });
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [contactModal, setContactModal] = useState({ isOpen: false, projectTitle: '' });

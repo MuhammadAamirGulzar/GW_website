@@ -11,7 +11,7 @@ const ResearchPage = () => {
     const [currentImage, setCurrentImage] = useState("SSC_normal.png");
     const [selectedApplication, setSelectedApplication] = useState("Smart Media");
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-    const [isImageHovered, setIsImageHovered] = useState(false);
+    const [, setIsImageHovered] = useState(false);
 
     // ✅ Scroll to top on page load and route changes
     useEffect(() => {

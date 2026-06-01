@@ -11,7 +11,7 @@ const Card = ({ children, className = "", padding = "p-6", ...props }) => (
 
 const NewsAndEvents = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [hoveredCard, setHoveredCard] = useState(null);
+  const [, setHoveredCard] = useState(null);
 
   useEffect(() => {
       window.scrollTo(0, 0);
